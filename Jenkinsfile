@@ -1,6 +1,5 @@
 node {
         stage("Main build") {
-
             checkout scm
 
             docker.image('ruby:2.3.1').inside {
