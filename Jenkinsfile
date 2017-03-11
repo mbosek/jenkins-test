@@ -2,29 +2,15 @@ node {
         stage("Main build") {
             checkout scm
 
-            docker.image('ruby:2.3.1').inside {
+            docker.image('maven:3.3.3-jdk-8').inside {
 
               stage("Install Bundler") {
-                sh "gem install bundler --no-rdoc --no-ri"
-              }
-
-              stage("Use Bundler to install dependencies") {
-                sh "bundle install"
-              }
-
-              stage("Build package") {
-                sh "bundle exec rake build:deb"
-              }
-
-              stage("Archive package") {
-                archive (includes: 'pkg/*.deb')
+		git url: 'https://github.com/TTFHW/jenkins_pipeline_java_maven.git'
+                sh "mvn -B clean install"
               }
 
            }
 
         }
-
-        // Clean up workspace
-        step([$class: 'WsCleanup'])
 
 }
